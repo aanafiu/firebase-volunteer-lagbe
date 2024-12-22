@@ -62,20 +62,19 @@ const Header = () => {
 
               <div className="block md:hidden ">
                 <DropdownMenuItem>
-                  <Button>
+                  <Button className="w-full text-sm">
                     <Link
                       to="/user/login"
                       variant="secondary"
-                      className="w-full text-sm"
+                      
                     >
                       Login
                     </Link>
                   </Button>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Button>
-                    {" "}
-                    <Link to="/user/be-a-volunteer" className="w-full text-sm">
+                  <Button className="w-full text-sm">
+                    <Link to="/user/be-a-volunteer" >
                       Be A Volunteer
                     </Link>
                   </Button>
@@ -85,20 +84,19 @@ const Header = () => {
           </DropdownMenu>
         </div>
 
-        <Button>
+        <Button className="hidden md:block w-full ml-2 mr-2">
           <Link
-            className="btn"
             to="/user/be-a-volunteer"
-            className="hidden md:block ml-2 mr-2"
+            
           >
-            Be A Volunteer
+          Be A Volunteer
           </Link>
         </Button>
-        <Button>
+        <Button className="hidden md:block w-full px-2">
           <Link
             to="/user/login"
             variant="secondary"
-            className="hidden md:block px-2"
+            
           >
             Login
           </Link>
