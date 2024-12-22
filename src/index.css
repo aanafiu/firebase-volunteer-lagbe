@@ -2,11 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ... */
+/* Light and Dark Mode Styles */
+:root {
+  --bg-color: #f5f5f5;
+  --text-color: #000;
+}
 
-@layer base {
-  :root {
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
 
-    --radius: 0.5rem
-  }
+html.light {
+  --bg-color: #f5f5f5;
+  --text-color: #000;
+}
+
+html.dark {
+  --bg-color: #000;
+  --text-color: #fff;
+}
+
+/* Custom ShadCN Card styles based on dark mode */
+.card {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.dark .card {
+  background-color: #333;
+  color: white;
+}
+
+/* Custom button color for light and dark themes */
+button {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.dark button {
+  background-color: #444;
+  color: white;
 }

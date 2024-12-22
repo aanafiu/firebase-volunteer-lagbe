@@ -1,11 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { Button } from '@/components/ui/button'
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+// import {RouterProvider} from "react-router-dom";
+import "./index.css";
 
+import { RouterProvider } from "react-router-dom";
+import router from "@/components/Routes/router";
+import { ThemeProvider } from "@/components/Provider/theme-provider";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-   <div>Hello Shadcn ui <Button>Me</Button></div>
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  </React.StrictMode>
+);
