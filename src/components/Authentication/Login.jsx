@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/login-form";
+import { LoginForm } from "@/components/ui/login-form";
 import Lottie from "lottie-react";
 import loginAnimation from "../../assets/LoginAnimation.json";
 import { Card } from "@/components/ui/card";

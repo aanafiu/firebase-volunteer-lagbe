@@ -10,11 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Menu, Moon, Sun } from "lucide-react";
 import logo from "../../assets/logo.png";
+import { useContext } from "react";
+import { UserContext } from "@/components/Provider/AuthProvider";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
+  const { user, signOutUser } = useContext(UserContext);
+  console.log(user?.photoURL);
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleLogout = () => {
+    signOutUser();
   };
 
   return (
@@ -63,20 +71,14 @@ const Header = () => {
               <div className="block md:hidden ">
                 <DropdownMenuItem>
                   <Button className="w-full text-sm">
-                    <Link
-                      to="/user/login"
-                      variant="secondary"
-                      
-                    >
+                    <Link to="/user/login" variant="secondary">
                       Login
                     </Link>
                   </Button>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Button className="w-full text-sm">
-                    <Link to="/user/be-a-volunteer" >
-                      Be A Volunteer
-                    </Link>
+                    <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
                   </Button>
                 </DropdownMenuItem>
               </div>
@@ -84,23 +86,26 @@ const Header = () => {
           </DropdownMenu>
         </div>
 
-        <Button className="hidden md:block w-full ml-2 mr-2">
-          <Link
-            to="/user/be-a-volunteer"
-            
-          >
-          Be A Volunteer
-          </Link>
-        </Button>
-        <Button className="hidden md:block w-full px-2">
-          <Link
-            to="/user/login"
-            variant="secondary"
-            
-          >
-            Login
-          </Link>
-        </Button>
+        {/* USer Checking */}
+        <div>
+          { user?.email ? (
+            <div className="flex gap-2 items-center justify-center w-fit ">
+              <img src={user?.photoURL || "no"} alt="profile picture" className="rounded-full w-16"/>
+              <Button onClick={handleLogout} variant="destructive">Logout</Button>
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center justify-center">
+              <Button className="hidden md:block w-full ml-2 mr-2">
+                <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
+              </Button>
+              <Button className="hidden md:block w-full px-2">
+                <Link to="/user/login" variant="secondary">
+                  Login
+                </Link>
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
       <Button onClick={toggleTheme}>

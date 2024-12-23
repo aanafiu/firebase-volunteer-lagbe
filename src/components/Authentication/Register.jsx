@@ -1,4 +1,4 @@
-import {RegistrationForm } from "@/components/registration-form";
+import {RegistrationForm } from "@/components/ui/registration-form";
 import Lottie from "lottie-react";
 import registrationAnimation from "../../assets/registrationAnimation.json";
 import { Card } from "@/components/ui/card";
