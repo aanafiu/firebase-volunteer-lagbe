@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { Eye, EyeClosed } from "lucide-react";
 import { UserContext } from "@/components/Provider/AuthProvider";
 import Loader from "@/components/Common/Loader";
+import axios from "axios";
 
 export function RegistrationForm({ className, ...props }) {
   const navigate = useNavigate();
@@ -85,36 +86,52 @@ export function RegistrationForm({ className, ...props }) {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log(name, photo, email, password)
+    console.log(name, photo, email, password);
 
     if (passwordValid || validatePassword(password)) {
       registerNewAccount(email, password)
         .then(() => {
-          updateDetails(name, photo).then(() => {
-            Swal.fire({
-              title: `Welcome ${name}`,
-              text: "You Have Successfully Created An Account ",
-              icon: "success",
-              confirmButtonText: "Continue ",
-              allowOutsideClick: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // Navigate when "OK" is clicked
-                navigate(location.state ? `${location.state}` : "/");
-                setTimeout(() => {
-                  setLoading(false); // Stop loading after delay
-                }, 2000);
-              }
+          // save mongo db data
+
+          axios
+            .post("http://localhost:5000/userinformation", {
+              name: name,
+              email: email,
+              photoURL: photo, // Data to send
+            })
+            .then((response) => {
+              // Update Details
+              updateDetails(name, photo).then(() => {
+                Swal.fire({
+                  title: `Welcome ${name}`,
+                  text: "You Have Successfully Created An Account ",
+                  icon: "success",
+                  confirmButtonText: "Continue ",
+                  allowOutsideClick: false,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    // Navigate when "OK" is clicked
+                    navigate(location.state ? `${location.state}` : "/");
+                    setTimeout(() => {
+                      setLoading(false); // Stop loading after delay
+                    }, 2000);
+                  }
+                });
+              });
+            })
+            .catch(() => {
+           
+                errorNotification();
+              
             });
-          });
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
+
           setLoading(false);
           errorNotification();
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
+
           setLoading(false);
           errorNotification();
         });
@@ -127,28 +144,46 @@ export function RegistrationForm({ className, ...props }) {
       });
     }
   };
-// Google Register
+  // Google Register
   const handleGoogle = (e) => {
     e.preventDefault();
     setLoading(true);
     loginGoogle()
-      .then(() => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 1000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Signed in successfully",
-        });
-      }).then((result) => {
+      .then((info) => {
+        // Save Data To MongoDB
+        console.log(info.user.email);
+        const userFull = info.user;
+        axios
+          .post("http://localhost:5000/userinformation", {
+            name: userFull.displayName,
+            email: userFull.email,
+            photoURL: userFull.photoURL,
+          })
+          .then((response) => {
+            // Notification Toaster
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 1000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Signed in successfully",
+            });
+          })
+          .catch((error) => {
+
+              errorNotification();
+
+          });
+      })
+      .then((result) => {
         if (result.isConfirmed) {
           // Navigate when "OK" is clicked
           setTimeout(() => {
@@ -161,13 +196,12 @@ export function RegistrationForm({ className, ...props }) {
         setLoading(false);
         errorNotification();
       });
-    
+
     // navigate(location.state ? `${location.state}` : "/");
   };
 
-  if(loading)
-  {
-    return <Loader></Loader>
+  if (loading) {
+    return <Loader></Loader>;
   }
 
   return (
@@ -217,9 +251,21 @@ export function RegistrationForm({ className, ...props }) {
               <div className="grid gap-2">
                 <div className="flex justify-between items-center">
                   <Label htmlFor="password">Password</Label>
-                  <button type="button" onClick={handleEye}>
-                    {!eyeBtn ? <EyeClosed /> : <Eye />}
-                  </button>
+                  <div
+                    type="button"
+                    className="w-fit h-fit"
+                    onClick={handleEye}
+                  >
+                    {!eyeBtn ? (
+                      <EyeClosed
+                        size={24}
+                        strokeWidth={1.5}
+                        absoluteStrokeWidth
+                      />
+                    ) : (
+                      <Eye size={24} strokeWidth={1.5} absoluteStrokeWidth />
+                    )}
+                  </div>
                 </div>
                 <Input
                   id="password"
@@ -242,13 +288,21 @@ export function RegistrationForm({ className, ...props }) {
               <Button type="submit" className="w-full">
                 Register Now!
               </Button>
-              <Button onClick={handleGoogle} variant="outline" className="w-full">
+              <Button
+                onClick={handleGoogle}
+                variant="outline"
+                className="w-full"
+              >
                 Register Now! with Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?
-              <Link  state={location.state} to="/user/login" className="underline underline-offset-4">
+              <Link
+                state={location.state}
+                to="/user/login"
+                className="underline underline-offset-4"
+              >
                 Sign in
               </Link>
             </div>

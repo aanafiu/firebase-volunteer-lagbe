@@ -3,7 +3,7 @@ import loadingA from "../../assets/Loading.json";
 
 const Loader = () => {
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-white z-50">
+    <div className="fixed inset-0 flex justify-center items-center bg-current z-50">
       <Lottie animationData={loadingA} className="w-32 h-32" />
     </div>
   );

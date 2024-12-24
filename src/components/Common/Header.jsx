@@ -38,16 +38,16 @@ const Header = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/allposts">Need Volunteer</Link>
+          <Link to="/all-needed-posts">Need Volunteer</Link>
         </li>
         <li>
-          <Link to="/myprofile">My Profile</Link>
+          <Link to="/user/myprofile">My Profile</Link>
         </li>
       </ul>
 
       <div className="flex items-center gap-3">
-        <div className="flex lg:hidden mr-2 items-center">
-          <DropdownMenu>
+        <div className="flex w-full lg:hidden mr-2 items-center">
+          <DropdownMenu >
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
                 <Menu className="h-5 w-5 rotate-0 scale-100" />
@@ -56,48 +56,77 @@ const Header = () => {
 
             <DropdownMenuContent
               align="end"
-              className="bg-card border border-border rounded-lg shadow-lg mt-2 p-2"
+              className="bg-card border flex flex-col gap-2 border-border rounded-lg shadow-lg mt-2 p-2"
             >
+              <DropdownMenuItem className="hover:bg-primary flex md:hidden justify-center items-center w-fit mx-auto hover:text-white px-4 py-2 rounded-md">
+                <Link to="/user/myprofile"  title="My Profile">
+                  {user && (
+                    <div className="flex gap-2 items-center justify-center w-fit ">
+                      <img
+                        src={user?.photoURL || "no"}
+                        alt="profile picture"
+                        className="rounded-full w-16"
+                      />
+                    </div>
+                  )}
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem className="hover:bg-primary hover:text-white px-4 py-2 rounded-md">
                 <Link to="/">Home</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="hover:bg-primary hover:text-white px-4 py-2 rounded-md">
-                <Link to="/allposts">Need Volunteer</Link>
+                <Link to="/all-needed-posts">Need Volunteer</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="hover:bg-primary hover:text-white px-4 py-2 rounded-md">
-                <Link to="/myprofile">My Profile</Link>
+                <Link to="/user/myprofile">My Profile</Link>
               </DropdownMenuItem>
 
-              <div className="block md:hidden ">
-                <DropdownMenuItem>
-                  <Button className="w-full text-sm">
-                    <Link to="/user/login" variant="secondary">
-                      Login
-                    </Link>
-                  </Button>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Button className="w-full text-sm">
-                    <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
-                  </Button>
-                </DropdownMenuItem>
+              <div className="flex flex-col gap-3 justify-center items-center md:hidden">
+                <Button className=" w-full ml-2 mr-2">
+                  <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
+                </Button>
+                {user?.email ? (
+                  <div className="flex gap-2 items-center justify-center w-full ">
+                    <Button
+                      onClick={handleLogout}
+                      variant="destructive"
+                      className="w-full"
+                    >
+                      Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <div className=" w-full">
+                    <Button className="w-full px-2">
+                      <Link to="/user/login" variant="secondary">
+                        Login
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
         {/* USer Checking */}
-        <div>
-          { user?.email ? (
-            <div className="flex gap-2 items-center justify-center w-fit ">
-              <img src={user?.photoURL || "no"} alt="profile picture" className="rounded-full w-16"/>
-              <Button onClick={handleLogout} variant="destructive">Logout</Button>
+        <div className="hidden md:flex gap-5 items-center justify-center w-full">
+          <Button className="hidden md:block w-full ml-2 mr-5">
+            <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
+          </Button>
+          {user?.email ? (
+            <div className="flex gap-2 items-center justify-center w-full ">
+              <img
+                src={user?.photoURL || "no"}
+                alt="profile picture"
+                className="rounded-full w-16"
+              />
+              <Button onClick={handleLogout} variant="destructive">
+                Logout
+              </Button>
             </div>
           ) : (
             <div className="flex gap-2 items-center justify-center">
-              <Button className="hidden md:block w-full ml-2 mr-2">
-                <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
-              </Button>
               <Button className="hidden md:block w-full px-2">
                 <Link to="/user/login" variant="secondary">
                   Login

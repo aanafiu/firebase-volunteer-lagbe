@@ -1,7 +1,11 @@
 import Login from "@/components/Authentication/Login";
 import Register from "@/components/Authentication/Register";
+import AllNeededPost from "@/components/Common/AllNeededPost";
+import Home from "@/components/Home/Home";
 import MainLayout from "@/components/Layouts/MainLayout";
 import UserLayout from "@/components/Layouts/UserLayout";
+import MyProfile from "@/components/Provider/UserProfile/MyProfile";
+import MyVolunteerPost from "@/components/Provider/UserProfile/MyVolunteerPost";
 import {
     createBrowserRouter,
   } from "react-router-dom";
@@ -13,8 +17,12 @@ import {
       element: <MainLayout></MainLayout>,
       children: [
         {
-          path:"/",
-          element:<div>I am outlet</div>
+          path:"",
+          element:<Home></Home>
+        },
+        {
+          path:"all-needed-posts",
+          element:<AllNeededPost></AllNeededPost>
         }
       ]
     },
@@ -23,16 +31,28 @@ import {
       element: <UserLayout></UserLayout>,
       children: [
         {
-          path:"/user",
+          path:"",
           element:<Login/>
         },
         {
-          path:"/user/login",
+          path:"login",
           element:<Login/>
         },
         {
-          path:"/user/register",
+          path:"register",
           element:<Register/>
+        },
+        {
+          path:"myprofile",
+          element:<MyProfile></MyProfile>
+        },
+        {
+          path:"myposts",
+          element:<MyVolunteerPost></MyVolunteerPost>
+        },
+        {
+          path:"be-a-volunteer",
+          element:<AllNeededPost/>
         }
       ]
     },
