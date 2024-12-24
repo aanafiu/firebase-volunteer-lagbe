@@ -14,18 +14,21 @@ import {
 } from "@/components/ui/form";
 import { UserContext } from "@/components/Provider/AuthProvider";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const MyVolunteerPost = () => {
   const { user } = useContext(UserContext);
-  const [userID, setUserID] = useState()
+  const [userID, setUserID] = useState();
 
-  axios.get(`http://localhost:5000/userinformation?email=${user.email}`)
-  .then((res)=>{
-    setUserID(res.data[0]._id)
-    // console.log(res.data)
-    // console.log(res.data[0]._id)
-  })
-  console.log(userID)
+  axios
+    .get(`http://localhost:5000/userinformation?email=${user.email}`)
+    .then((res) => {
+      setUserID(res.data[0]._id);
+      // console.log(res.data)
+      // console.log(res.data[0]._id)
+    });
+  console.log(userID);
 
   const form = useForm({
     defaultValues: {
@@ -76,20 +79,30 @@ const MyVolunteerPost = () => {
     }
   };
 
+  const navigate = useNavigate();
   const onSubmit = (data) => {
     if (data.deadline) {
-        const formattedDeadline = new Date(data.deadline).toLocaleDateString("en-GB"); // Formats to dd/mm/yyyy
-        console.log("Formatted Deadline:", formattedDeadline);
-        data.deadline = formattedDeadline;
-      }
-      data.organizerID = userID;
+      const formattedDeadline = new Date(data.deadline).toLocaleDateString(
+        "en-GB"
+      ); // Formats to dd/mm/yyyy
+      console.log("Formatted Deadline:", formattedDeadline);
+      data.deadline = formattedDeadline;
+    }
+    data.organizerID = userID;
 
     // console.log("Form Data:", data,userID );
-    axios.post('http://localhost:5000/volunteerneededpost',{"data" : data})
-    .then((res)=>
-    {
-        console.log(res);
-    })
+    axios.post("http://localhost:5000/volunteerneededpost", { data: data });
+    Swal.fire({
+      text: "Your Post Has Been Published ",
+      icon: "success",
+      confirmButtonText: "Continue ",
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(location.state ? `${location.state}` : "/all-needed-posts");
+
+      }
+    });
   };
 
   return (
@@ -229,10 +242,11 @@ const MyVolunteerPost = () => {
               <FormItem>
                 <FormLabel className="mr-5">Deadline</FormLabel>
                 <FormControl>
-                  <DatePicker className="p-2"
+                  <DatePicker
+                    className="p-2"
                     selected={field.value}
                     onChange={(date) => {
-                      field.onChange(date); 
+                      field.onChange(date);
                       setSelectedDate(date);
                     }}
                     showMonthDropdown
