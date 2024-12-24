@@ -22,7 +22,7 @@ const MyVolunteerPost = () => {
   const [userID, setUserID] = useState();
 
   axios
-    .get(`http://localhost:5000/userinformation?email=${user.email}`)
+    .get(`http://localhost:5000/userinformation?email=${user?.email}`)
     .then((res) => {
       setUserID(res.data[0]._id);
       // console.log(res.data)
@@ -47,6 +47,7 @@ const MyVolunteerPost = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [toggleImage, setToggleImage] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -100,7 +101,6 @@ const MyVolunteerPost = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(location.state ? `${location.state}` : "/all-needed-posts");
-
       }
     });
   };
@@ -120,17 +120,44 @@ const MyVolunteerPost = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Thumbnail</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      if (file) {
-                        uploadFileToImgBB(file);
-                      }
-                    }}
+                <div className="flex items-center mb-4">
+                  <input
+                    id="photoUrlToggle"
+                    type="checkbox"
+                    className="mr-2"
+                    checked={toggleImage}
+                    onChange={(e) => setToggleImage(e.target.checked)}
                   />
+                  <label htmlFor="photoUrlToggle" className="text-sm">
+                    Use Photo URL
+                  </label>
+                </div>
+
+                <FormControl>
+                  {!toggleImage ? (
+                    // File Upload Input
+                    <Input
+                      type="file"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          uploadFileToImgBB(file); // Handle file upload
+                        }
+                      }}
+                    />
+                  ) : (
+                    // Photo URL Input
+                    <Input
+                      type="url"
+                      placeholder="Enter photo URL"
+                      onChange={(e) => {
+                        const url = e.target.value;
+                        field.onChange(url); // Pass the URL to form control
+                      }}
+                    />
+                  )}
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}

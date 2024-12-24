@@ -1,6 +1,7 @@
 import Login from "@/components/Authentication/Login";
 import Register from "@/components/Authentication/Register";
 import AllNeededPost from "@/components/Common/AllNeededPost";
+import PostDetails from "@/components/Common/PostDetails/PostDetails";
 import Home from "@/components/Home/Home";
 import MainLayout from "@/components/Layouts/MainLayout";
 import UserLayout from "@/components/Layouts/UserLayout";
@@ -22,7 +23,13 @@ import {
         },
         {
           path:"all-needed-posts",
-          element:<AllNeededPost></AllNeededPost>
+          element:<AllNeededPost></AllNeededPost>,
+          loader: ()=> fetch("http://localhost:5000/volunteerneededpost")
+        },
+        {
+          path:"posts/:id",
+          element:<PostDetails></PostDetails>,
+          loader:(({params})=>fetch(`http://localhost:5000/volunteerneededpost/${params.id}`))
         }
       ]
     },
@@ -52,7 +59,13 @@ import {
         },
         {
           path:"be-a-volunteer",
-          element:<AllNeededPost/>
+          element:<AllNeededPost/>,
+          loader: ()=> fetch("http://localhost:5000/volunteerneededpost")
+        },
+        {
+          path:"posts/:id",
+          element:<PostDetails></PostDetails>,
+          loader:(({param})=>fetch(`http://localhost:5000/volunteerneededpost/${param.id}`))
         }
       ]
     },

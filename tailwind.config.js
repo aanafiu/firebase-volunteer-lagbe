@@ -5,6 +5,7 @@ export default {
 	theme: {
 		extend: {
 		  colors: {
+			headline:"black",
 			primary: '#3b82f6', // Blue
 			secondary: '#9333ea', // Purple
 			background: '#f5f5f5',
