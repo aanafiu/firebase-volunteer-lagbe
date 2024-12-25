@@ -270,7 +270,7 @@ const MyVolunteerPost = () => {
                 <FormLabel className="mr-5">Deadline</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className="p-2"
+                    className="p-2 bg-transparent"
                     selected={field.value}
                     onChange={(date) => {
                       if (date instanceof Date && !isNaN(date)) {

@@ -40,14 +40,16 @@ const Header = () => {
         <li>
           <Link to="/all-needed-posts">Need Volunteer</Link>
         </li>
-        <li>
-          <Link to="/user/myprofile">My Profile</Link>
-        </li>
+        {user && (
+          <li>
+            <Link to="/user/myprofile">My Profile</Link>
+          </li>
+        )}
       </ul>
 
       <div className="flex items-center gap-3">
         <div className="flex w-full lg:hidden mr-2 items-center">
-          <DropdownMenu >
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
                 <Menu className="h-5 w-5 rotate-0 scale-100" />
@@ -59,7 +61,7 @@ const Header = () => {
               className="bg-card border flex flex-col gap-2 border-border rounded-lg shadow-lg mt-2 p-2"
             >
               <DropdownMenuItem className="hover:bg-primary flex md:hidden justify-center items-center w-fit mx-auto hover:text-white px-4 py-2 rounded-md">
-                <Link to="/user/myprofile"  title="My Profile">
+                <Link to="/user/myprofile" title="My Profile">
                   {user && (
                     <div className="flex gap-2 items-center justify-center w-fit ">
                       <img
@@ -77,13 +79,15 @@ const Header = () => {
               <DropdownMenuItem className="hover:bg-primary hover:text-white px-4 py-2 rounded-md">
                 <Link to="/all-needed-posts">Need Volunteer</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-primary hover:text-white px-4 py-2 rounded-md">
-                <Link to="/user/myprofile">My Profile</Link>
-              </DropdownMenuItem>
+              {user && (
+                <DropdownMenuItem className="hover:bg-primary hover:text-white px-4 py-2 rounded-md">
+                  <Link to="/user/myprofile">My Profile</Link>
+                </DropdownMenuItem>
+              )}
 
               <div className="flex flex-col gap-3 justify-center items-center md:hidden">
                 <Link to="/user/be-a-volunteer" className=" w-full ml-2 mr-2">
-                  <Button >Be A Volunteer</Button>
+                  <Button>Be A Volunteer</Button>
                 </Link>
                 {user?.email ? (
                   <div className="flex gap-2 items-center justify-center w-full ">

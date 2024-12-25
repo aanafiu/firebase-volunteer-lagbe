@@ -5,6 +5,7 @@ import PostDetails from "@/components/Common/PostDetails/PostDetails";
 import Home from "@/components/Home/Home";
 import MainLayout from "@/components/Layouts/MainLayout";
 import UserLayout from "@/components/Layouts/UserLayout";
+import PrivateRoutes from "@/components/Provider/PrivateRoutes";
 import MyProfile from "@/components/Provider/UserProfile/MyProfile";
 import MyVolunteerPost from "@/components/Provider/UserProfile/MyVolunteerPost";
 import {
@@ -51,7 +52,7 @@ import {
         },
         {
           path:"myprofile",
-          element:<MyProfile></MyProfile>
+          element:<PrivateRoutes><MyProfile></MyProfile></PrivateRoutes>
         },
         {
           path:"myposts",
