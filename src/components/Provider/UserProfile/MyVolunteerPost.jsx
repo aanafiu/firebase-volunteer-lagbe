@@ -24,7 +24,7 @@ const MyVolunteerPost = () => {
   axios
     .get(`http://localhost:5000/userinformation?email=${user?.email}`)
     .then((res) => {
-      setUserID(res.data[0]._id);
+      setUserID(res.data._id);
       // console.log(res.data)
       // console.log(res.data[0]._id)
     });
@@ -39,7 +39,7 @@ const MyVolunteerPost = () => {
       description: "",
       category: "",
       location: "",
-      volunteersNeeded: "",
+      volunteersNeeded: null,
       deadline: null,
       thumbnail: "",
     },
@@ -90,7 +90,7 @@ const MyVolunteerPost = () => {
       data.deadline = formattedDeadline;
     }
     data.organizerID = userID;
-
+    data.volunteersNeeded = Number(data.volunteersNeeded);
     // console.log("Form Data:", data,userID );
     axios.post("http://localhost:5000/volunteerneededpost", { data: data });
     Swal.fire({
@@ -273,8 +273,10 @@ const MyVolunteerPost = () => {
                     className="p-2"
                     selected={field.value}
                     onChange={(date) => {
-                      field.onChange(date);
-                      setSelectedDate(date);
+                      if (date instanceof Date && !isNaN(date)) {
+                        field.onChange(date);
+                        setSelectedDate(date); // Set the selected date correctly
+                      }
                     }}
                     showMonthDropdown
                     useShortMonthInDropdown

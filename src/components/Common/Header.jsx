@@ -82,9 +82,9 @@ const Header = () => {
               </DropdownMenuItem>
 
               <div className="flex flex-col gap-3 justify-center items-center md:hidden">
-                <Button className=" w-full ml-2 mr-2">
-                  <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
-                </Button>
+                <Link to="/user/be-a-volunteer" className=" w-full ml-2 mr-2">
+                  <Button >Be A Volunteer</Button>
+                </Link>
                 {user?.email ? (
                   <div className="flex gap-2 items-center justify-center w-full ">
                     <Button

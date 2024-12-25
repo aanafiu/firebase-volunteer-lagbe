@@ -1,13 +1,131 @@
+import { UserContext } from "@/components/Provider/AuthProvider";
 import { useTheme } from "@/components/Provider/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import axios from "axios";
+
+import { useContext, useEffect, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 
 const PostDetails = () => {
+    const {user} = useContext(UserContext);
   const post = useLoaderData();
   console.log(post);
   const { theme } = useTheme();
+
+
+//   Status Check
+const [userStatus, setUserStatus] = useState("")
+useEffect(()=>{
+    axios.get(`http://localhost:5000/userinformation?email=${user?.email}`)
+      .then((res)=>{
+        console.log(res.data.requestedVolunteer)
+        const requestedData = res.data.requestedVolunteer;
+        const status = requestedData?.find((r) => r.id === post._id)?.status;
+        if (status === "requested") {
+            setUserStatus(status);
+          } else {
+            setUserStatus('Not requested'); // Default if no match
+          }
+      })
+},[user?.email, post])
+
+const navigate = useNavigate();
+//   Be A Volunteer Modal
+const handleBeVolunteer = (e)=>{
+    Swal.fire({
+        html: `
+          <div class="w-full flex justify-center items-center mx-auto flex-col text-black">
+            <img src=${post.thumbnail} class="w-[100px] h-[100px] rounded-full"/>
+            <h1>Title: ${post.postTitle}</h1>
+            <h1>Location: ${post.location}</h1>
+            <h1>Number Of Volunteer Needs: ${post.volunteersNeeded}</h1>
+            <h1>Deadline: ${post.deadline}</h1>
+            <div>
+              <h1 class='${userStatus ==="requested" ? "text-green-500" : "text-red-500"}'>Status: ${userStatus.toUpperCase()}</h1>
+            </div>
+          </div>
+        `,
+        confirmButtonText: "Request",
+        footer: `
+          <button id="closeButton" class="swal2-close-button bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300">
+            Close
+          </button>
+        `,
+        willOpen: () => {
+          const confirmButton = Swal.getConfirmButton();
+          if (userStatus === "requested") {
+            confirmButton.disabled = true; // Disable the button if status is "Requested"
+          }
+          // Add a click event to the close button
+          document.getElementById("closeButton").addEventListener("click", () => {
+            Swal.close();
+          });
+        },
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `,
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `,
+        },
+      })      
+      .then((result)=>{
+        if(result.isConfirmed)
+        {
+            const updatedData = {
+                requestedVolunteer :post._id,
+                status:"requested"
+
+            };
+            console.log(updatedData)
+
+            fetch(`http://localhost:5000/userinformation?email=${user?.email}`, {
+                method: 'PATCH',
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(updatedData),
+              })
+              
+
+            //   Now Descrese the total vlunteer number
+            const data =  post.volunteersNeeded;
+            console.log(parseInt(data)); 
+            axios.patch(`http://localhost:5000/volunteerneededpost/${post._id}`,data)
+            .then(response =>{
+                if(response.status === 200)
+                {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "right-bottom",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                      Toast.fire({
+                        icon: "success",
+                        title: "Requested As A Volunteer"
+                      });
+                }
+            })
+            navigate("/user/myprofile")  
+        }
+      })
+}
 
   return (
     <Card className="bg-gradient-to-r dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-16">
@@ -58,14 +176,15 @@ const PostDetails = () => {
             <p>
               <span className="font-semibold">Deadline:</span> {post.deadline}
             </p>
+            <h1 className={`${userStatus ==="requested" ? "text-green-500" : "text-red-500"}`}>Status: {userStatus.toUpperCase()}</h1>
           </div>
         </div>
       </div>
 
       {/* Center Button */}
       <div className="mt-12 text-center">
-        <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg">
-          Be A Volunteer
+        <Button onClick={handleBeVolunteer} className="bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg">
+          {userStatus === "requested" ? "Check Request" : "Be A Volunteer" }
         </Button>
       </div>
     </Card>
