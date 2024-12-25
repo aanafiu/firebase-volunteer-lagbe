@@ -16,7 +16,7 @@ const MyProfile = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:5000/userinformation?email=${user?.email}`)
+        .get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
         .then((res) => {
           console.log(res.data);
           setData(res.data);
@@ -25,7 +25,7 @@ const MyProfile = () => {
           console.error("Error fetching user data:", err);
         });
       axios
-        .get("http://localhost:5000/volunteerneededpost")
+        .get("https://backend-volunteer-lagbe.vercel.app/volunteerneededpost")
         .then((res) => setAllPost(res.data));
     }
   }, [user?.email]);
@@ -65,7 +65,7 @@ const MyProfile = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/volunteerneededpost/${id}`)
+          .delete(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${id}`)
           .then((res) => {
             console.log(`Deleted post with ID: ${id}`);
             if (type === "postedPost") {
@@ -182,12 +182,12 @@ const MyProfile = () => {
                     {post.postTitle}
                   </td>
                   <td className="p-2 border border-gray-300">
-                    <button
+                    <Link
                       className="text-blue-500 hover:underline mr-2"
-                      onClick={() => handleUpdate(post._id)}
+                      to={`/user/updatepost/${post._id}`}
                     >
                       Update
-                    </button>
+                    </Link>
                     <button
                       className="text-red-500 hover:underline"
                       onClick={() => handleDelete(post._id, "postedPost")}

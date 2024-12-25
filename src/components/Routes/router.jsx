@@ -8,6 +8,7 @@ import UserLayout from "@/components/Layouts/UserLayout";
 import PrivateRoutes from "@/components/Provider/PrivateRoutes";
 import MyProfile from "@/components/Provider/UserProfile/MyProfile";
 import MyVolunteerPost from "@/components/Provider/UserProfile/MyVolunteerPost";
+import MyVolunteerPostUpdate from "@/components/Provider/UserProfile/MyVolunteerPostUpdate";
 import {
     createBrowserRouter,
   } from "react-router-dom";
@@ -25,12 +26,12 @@ import {
         {
           path:"all-needed-posts",
           element:<AllNeededPost></AllNeededPost>,
-          loader: ()=> fetch("http://localhost:5000/volunteerneededpost")
+          // loader: ()=> fetch("https://backend-volunteer-lagbe.vercel.app/volunteerneededpost")
         },
         {
           path:"posts/:id",
           element:<PostDetails></PostDetails>,
-          loader:(({params})=>fetch(`http://localhost:5000/volunteerneededpost/${params.id}`))
+          loader:(({params})=>fetch(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${params.id}`))
         }
       ]
     },
@@ -59,14 +60,13 @@ import {
           element:<MyVolunteerPost></MyVolunteerPost>
         },
         {
-          path:"be-a-volunteer",
-          element:<AllNeededPost/>,
-          loader: ()=> fetch("http://localhost:5000/volunteerneededpost")
+          path:"updatepost/:id",
+          element:<MyVolunteerPostUpdate/>
         },
         {
           path:"posts/:id",
           element:<PostDetails></PostDetails>,
-          loader:(({param})=>fetch(`http://localhost:5000/volunteerneededpost/${param.id}`))
+          loader:(({param})=>fetch(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${param.id}`))
         }
       ]
     },

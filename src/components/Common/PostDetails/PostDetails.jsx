@@ -19,7 +19,7 @@ const PostDetails = () => {
 //   Status Check
 const [userStatus, setUserStatus] = useState("")
 useEffect(()=>{
-    axios.get(`http://localhost:5000/userinformation?email=${user?.email}`)
+    axios.get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
       .then((res)=>{
         console.log(res.data.requestedVolunteer)
         const requestedData = res.data.requestedVolunteer;
@@ -89,7 +89,7 @@ const handleBeVolunteer = (e)=>{
             };
             console.log(updatedData)
 
-            fetch(`http://localhost:5000/userinformation?email=${user?.email}`, {
+            fetch(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`, {
                 method: 'PATCH',
                 headers: {
                   "content-type": "application/json",
@@ -101,7 +101,7 @@ const handleBeVolunteer = (e)=>{
             //   Now Descrese the total vlunteer number
             const data =  post.volunteersNeeded;
             console.log(parseInt(data)); 
-            axios.patch(`http://localhost:5000/volunteerneededpost/${post._id}`,data)
+            axios.patch(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${post._id}`,data)
             .then(response =>{
                 if(response.status === 200)
                 {

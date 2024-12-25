@@ -94,7 +94,7 @@ export function RegistrationForm({ className, ...props }) {
           // save mongo db data
 
           axios
-            .post("http://localhost:5000/userinformation", {
+            .post("https://backend-volunteer-lagbe.vercel.app/userinformation", {
               name: name,
               email: email,
               photoURL: photo, // Data to send
@@ -154,7 +154,7 @@ export function RegistrationForm({ className, ...props }) {
         console.log(info.user.email);
         const userFull = info.user;
         axios
-          .post("http://localhost:5000/userinformation", {
+          .post("https://backend-volunteer-lagbe.vercel.app/userinformation", {
             name: userFull.displayName,
             email: userFull.email,
             photoURL: userFull.photoURL,

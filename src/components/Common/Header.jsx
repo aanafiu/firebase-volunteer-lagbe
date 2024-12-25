@@ -58,7 +58,7 @@ const Header = () => {
 
             <DropdownMenuContent
               align="end"
-              className="bg-card border flex flex-col gap-2 border-border rounded-lg shadow-lg mt-2 p-2"
+              className="bg-white text-black border flex flex-col gap-2 border-border rounded-lg shadow-lg mt-2 p-2"
             >
               <DropdownMenuItem className="hover:bg-primary flex md:hidden justify-center items-center w-fit mx-auto hover:text-white px-4 py-2 rounded-md">
                 <Link to="/user/myprofile" title="My Profile">
@@ -85,9 +85,9 @@ const Header = () => {
                 </DropdownMenuItem>
               )}
 
-              <div className="flex flex-col gap-3 justify-center items-center md:hidden">
-                <Link to="/user/be-a-volunteer" className=" w-full ml-2 mr-2">
-                  <Button>Be A Volunteer</Button>
+              <div className="flex w-full flex-col gap-3 justify-center items-center md:hidden">
+                <Link to="/all-needed-posts" className=" w-full ml-2 mr-2">
+                  <Button className="w-full">Be A Volunteer</Button>
                 </Link>
                 {user?.email ? (
                   <div className="flex gap-2 items-center justify-center w-full ">
@@ -116,7 +116,7 @@ const Header = () => {
         {/* USer Checking */}
         <div className="hidden md:flex gap-5 items-center justify-center w-full">
           <Button className="hidden md:block w-full ml-2 mr-5">
-            <Link to="/user/be-a-volunteer">Be A Volunteer</Link>
+            <Link to="/all-needed-posts">Be A Volunteer</Link>
           </Button>
           {user?.email ? (
             <div className="flex gap-2 items-center justify-center w-full ">

@@ -15,26 +15,21 @@ import {
 import { UserContext } from "@/components/Provider/AuthProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const MyVolunteerPost = () => {
+const MyVolunteerPostUpdate = () => {
+    const postID = useParams();
+    console.log(postID);
   const { user } = useContext(UserContext);
-  const [userID, setUserID] = useState();
-
-  axios
-    .get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
-    .then((res) => {
-      setUserID(res.data._id);
-      // console.log(res.data)
-      // console.log(res.data[0]._id)
-    });
-  console.log(userID);
+  const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [toggleImage, setToggleImage] = useState(false);
 
   const form = useForm({
     defaultValues: {
-      organizerID: userID || "",
-      organizerName: user?.name || "",
-      organizerEmail: user?.email || "",
+      organizerID: "",
+      organizerName: "",
+      organizerEmail: "",
       postTitle: "",
       description: "",
       category: "",
@@ -45,16 +40,40 @@ const MyVolunteerPost = () => {
     },
   });
 
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [toggleImage, setToggleImage] = useState(false);
-
+  // Fetch post data and set as default values
   useEffect(() => {
-    if (user) {
-      form.setValue("organizerName", user.displayName);
-      form.setValue("organizerEmail", user.email);
+    if (postID) {
+      axios
+        .get(
+          `https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${postID.id}`
+        )
+        .then((res) => {
+          const postData = res.data;
+
+          // Set default values
+          form.setValue("organizerID", postData.organizerID);
+          form.setValue("organizerName", postData.organizerName);
+          form.setValue("organizerEmail", postData.organizerEmail);
+          form.setValue("postTitle", postData.postTitle);
+          form.setValue("description", postData.description);
+          form.setValue("category", postData.category);
+          form.setValue("location", postData.location);
+          form.setValue("volunteersNeeded", postData.volunteersNeeded);
+          form.setValue(
+            "deadline",
+            new Date(postData.deadline.split("/").reverse().join("-"))
+          ); // Convert to Date object
+          form.setValue("thumbnail", postData.thumbnail);
+
+          setSelectedDate(
+            new Date(postData.deadline.split("/").reverse().join("-"))
+          );
+        })
+        .catch((error) => {
+          console.error("Error fetching post data:", error);
+        });
     }
-  }, [user, form]);
+  }, [postID, form]);
 
   const uploadFileToImgBB = async (file) => {
     const formData = new FormData();
@@ -70,7 +89,6 @@ const MyVolunteerPost = () => {
       );
       const data = await response.json();
       if (data.success) {
-        setThumbnailUrl(data.data.url);
         form.setValue("thumbnail", data.data.url);
       } else {
         console.error("Image upload failed:", data.error);
@@ -80,29 +98,48 @@ const MyVolunteerPost = () => {
     }
   };
 
-  const navigate = useNavigate();
   const onSubmit = (data) => {
     if (data.deadline) {
       const formattedDeadline = new Date(data.deadline).toLocaleDateString(
         "en-GB"
-      ); // Formats to dd/mm/yyyy
-      console.log("Formatted Deadline:", formattedDeadline);
+      ); // dd/mm/yyyy
       data.deadline = formattedDeadline;
     }
-    data.organizerID = userID;
-    data.volunteersNeeded = Number(data.volunteersNeeded);
-    // console.log("Form Data:", data,userID );
-    axios.post("https://backend-volunteer-lagbe.vercel.app/volunteerneededpost", { data: data });
-    Swal.fire({
-      text: "Your Post Has Been Published ",
-      icon: "success",
-      confirmButtonText: "Continue ",
-      allowOutsideClick: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate(location.state ? `${location.state}` : "/all-needed-posts");
-      }
-    });
+
+    axios
+      .put(`http://localhost:5000/volunteerneededpost/${postID.id}`,data)
+      .then((res) => {
+        console.log(res)
+        if(res.status === 200)
+        {
+            Swal.fire({
+                text: "Your Post Has Been Updated",
+                icon: "success",
+                confirmButtonText: "Continue",
+                allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  navigate("/all-needed-posts");
+                }
+              });
+        }
+   
+      })
+      .catch((error) => {
+        if(error.status===400)
+            {
+                Swal.fire({
+                    text: "Nothing Updated",
+                    icon: "error",
+                    confirmButtonText: "Continue",
+                    allowOutsideClick: false,
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      navigate("/all-needed-posts");
+                    }
+                  });
+            }
+      });
   };
 
   return (
@@ -331,7 +368,7 @@ const MyVolunteerPost = () => {
 
           {/* Add Post Button */}
           <Button type="submit" className="w-full">
-            Add Post
+            Update Post
           </Button>
         </form>
       </Form>
@@ -339,4 +376,4 @@ const MyVolunteerPost = () => {
   );
 };
 
-export default MyVolunteerPost;
+export default MyVolunteerPostUpdate;
