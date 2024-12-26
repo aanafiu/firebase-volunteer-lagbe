@@ -16,6 +16,7 @@ import { UserContext } from "@/components/Provider/AuthProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/card";
 
 const MyVolunteerPost = () => {
   const { user } = useContext(UserContext);
@@ -106,7 +107,7 @@ const MyVolunteerPost = () => {
   };
 
   return (
-    <div className="w-[80%] mx-auto p-8 rounded-lg shadow-md">
+    <Card data-aos-easing="ease-in-back" className="w-[80%] mx-auto p-8 my-10 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-center">
         Add Volunteer Need Post
       </h1>
@@ -270,7 +271,7 @@ const MyVolunteerPost = () => {
                 <FormLabel className="mr-5">Deadline</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className="p-2 bg-transparent"
+                    className="p-2 bg-transparent border-2"
                     selected={field.value}
                     onChange={(date) => {
                       if (date instanceof Date && !isNaN(date)) {
@@ -330,12 +331,12 @@ const MyVolunteerPost = () => {
           </div>
 
           {/* Add Post Button */}
-          <Button type="submit" className="w-full">
-            Add Post
+          <Button variant="destructive" type="submit" className="w-full text-lg">
+            Add New Post
           </Button>
         </form>
       </Form>
-    </div>
+    </Card>
   );
 };
 

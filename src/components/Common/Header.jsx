@@ -35,14 +35,14 @@ const Header = () => {
 
       <ul className="hidden lg:flex items-center gap-10 text-card-foreground">
         <li className="text-primary font-medium">
-          <Link to="/">Home</Link>
+          <Button variant="headerD"><Link to="/">Home</Link></Button>
         </li>
         <li>
-          <Link to="/all-needed-posts">Need Volunteer</Link>
+        <Button variant="headerD"><Link to="/all-needed-posts">Need Volunteer</Link></Button>
         </li>
         {user && (
           <li>
-            <Link to="/user/myprofile">My Profile</Link>
+            <Button variant="headerD"><Link to="/user/myprofile">My Profile</Link></Button>
           </li>
         )}
       </ul>
@@ -115,7 +115,7 @@ const Header = () => {
 
         {/* USer Checking */}
         <div className="hidden md:flex gap-5 items-center justify-center w-full">
-          <Button className="hidden md:block w-full ml-2 mr-5">
+          <Button className="hidden md:block mr-10" variant="destructive">
             <Link to="/all-needed-posts">Be A Volunteer</Link>
           </Button>
           {user?.email ? (
@@ -131,17 +131,20 @@ const Header = () => {
             </div>
           ) : (
             <div className="flex gap-2 items-center justify-center">
-              <Button className="hidden md:block w-full px-2">
-                <Link to="/user/login" variant="secondary">
+              <Link to="/user/login">
+                <Button
+                  className="hidden md:block w-full px-2"
+                  variant="destructive"
+                >
                   Login
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           )}
         </div>
       </div>
 
-      <Button onClick={toggleTheme}>
+      <Button variant="destructive" onClick={toggleTheme}>
         {theme !== "dark" ? <Moon /> : <Sun />}
       </Button>
     </Card>

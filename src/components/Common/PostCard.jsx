@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 
+
 const PostCard = ({ post }) => {
     const deadlineString = post.deadline; // "31/12/2024"
     const [day, month, year] = deadlineString.split("/"); // Split it
@@ -21,11 +22,10 @@ const PostCard = ({ post }) => {
       ? `Deadline: ${formatDistanceToNow(deadline, { addSuffix: true })}`
       : "Deadline Passed";
     
-    console.log(deadlineText);
-    
+    // console.log(deadlineText);
 
   return (
-    <Card className="border w-full p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200">
+    <Card data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500" className="border w-full p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200">
       <CardContent className="p-1">
         <div className="mb-4 w-full">
           <img

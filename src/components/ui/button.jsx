@@ -9,15 +9,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-neutral-900 text-neutral-50 hover:bg-neutral-900/90 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50/90",
+        headerD:"text-bold text-[17px] font-bold hover:text-green-500 dark:bg-transparent hover:scale-[1.06]",
+        default: "bg-blue-950 text-neutral-50 hover:bg-neutral-900/90 dark:bg-blue-950 dark:text-neutral-900 dark:hover:bg-neutral-50/90",
         destructive:
-          "bg-red-500 text-neutral-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-neutral-50 dark:hover:bg-red-900/90",
+          "bg-green-600 text-white hover:bg-blue-950 font-bold dark:bg-blue-950 dark:hover:bg-green-600",
         outline:
-          "border border-neutral-200 bg-white hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
+          "border border-blue-950 bg-white hover:bg-neutral-100 hover:text-green-500 dark:border-white dark:bg-gray-950 dark:hover:bg-blue-950 dark:hover:text-white",
         secondary:
-          "bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80",
+          "bg-green-500 text-white hover:bg-blue-950 dark:bg-green-500 dark:text-white-50 dark:hover:bg-blue-950/80",
         ghost: "hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
-        link: "text-neutral-900 bg-gray-200 font-bold w-fit hover:scale-x-[1.03] border-box hover:bg-gray-300 hover:text-green-900",
+        link: "px-6 py-2 bg-green-500 font-bold text-white rounded-lg transition-transform transform hover:bg-gray-900 hover:text-green-500 hover:font-bold hover:scale-x-105 dark:bg-green-500 dark:hover:bg-gray-900 dark:hover:text-green-500",
       },
       size: {
         default: "h-10 px-4 py-2",

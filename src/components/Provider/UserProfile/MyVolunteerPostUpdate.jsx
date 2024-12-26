@@ -16,6 +16,7 @@ import { UserContext } from "@/components/Provider/AuthProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
+import { Card } from "@/components/ui/card";
 
 const MyVolunteerPostUpdate = () => {
     const postID = useParams();
@@ -105,9 +106,10 @@ const MyVolunteerPostUpdate = () => {
       ); // dd/mm/yyyy
       data.deadline = formattedDeadline;
     }
+    data.volunteersNeeded = Number(data.volunteersNeeded);
 
     axios
-      .put(`http://localhost:5000/volunteerneededpost/${postID.id}`,data)
+      .put(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${postID.id}`,data)
       .then((res) => {
         console.log(res)
         if(res.status === 200)
@@ -143,9 +145,9 @@ const MyVolunteerPostUpdate = () => {
   };
 
   return (
-    <div className="w-[80%] mx-auto p-8 rounded-lg shadow-md">
+    <Card className="w-[80%] mx-auto p-8 my-10 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-center">
-        Add Volunteer Need Post
+        Update Volunteer Need Post
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -307,7 +309,7 @@ const MyVolunteerPostUpdate = () => {
                 <FormLabel className="mr-5">Deadline</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className="p-2 bg-transparent"
+                    className="p-2 bg-transparent border-2"
                     selected={field.value}
                     onChange={(date) => {
                       if (date instanceof Date && !isNaN(date)) {
@@ -367,12 +369,12 @@ const MyVolunteerPostUpdate = () => {
           </div>
 
           {/* Add Post Button */}
-          <Button type="submit" className="w-full">
+          <Button variant="destructive" type="submit" className="w-full text-lg">
             Update Post
           </Button>
         </form>
       </Form>
-    </div>
+    </Card>
   );
 };
 

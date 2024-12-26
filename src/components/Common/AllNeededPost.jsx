@@ -1,21 +1,28 @@
+import Loader from "@/components/Common/Loader";
 import PostCard from "@/components/Common/PostCard";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Grid3x3, Rows3, SquareEqual } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import LazyLoad from "react-lazyload";
 import { Link, useLoaderData } from "react-router-dom";
 
 const AllNeededPost = () => {
   // const posts = useLoaderData();
+  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  useEffect(()=>{
-    axios.get("https://backend-volunteer-lagbe.vercel.app/volunteerneededpost", {
-      withCredentials: true,
-    })
-      .then((response) => setPosts(response.data))
+  useEffect(() => {
+    axios
+      .get("https://backend-volunteer-lagbe.vercel.app/volunteerneededpost", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setPosts(response.data);
+        setLoading(false);
+      })
       .catch((error) => console.error(error));
-  },[])
- 
+  }, []);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState("card"); // 'card' or 'row'
 
@@ -27,7 +34,7 @@ const AllNeededPost = () => {
   return (
     <div className="container mx-auto my-10">
       <div className="mb-4 container mx-auto gap-5 flex flex-col-reverse sm:flex-row-reverse  justify-between items-center">
-        <Button className="w-fit" variant="link">
+        <Button className="w-[30%] ml-10 text-lg" variant="link">
           <Link to="/user/myposts">Need Volunteer</Link>
         </Button>
 
@@ -43,14 +50,16 @@ const AllNeededPost = () => {
           {/* Layout Toggle Buttons */}
           <div className="flex whitespace-nowrap justify-center gap-5 items-center">
             <h1 className="font-bold">View Style</h1>
-            <Button className="m-0 p-2"
-              variant={viewMode === "card" ? "secondary" : "primary"}
+            <Button
+              className="m-0 p-2"
+              variant={viewMode === "card" ? "secondary" : "outline"}
               onClick={() => setViewMode("card")}
             >
               <Grid3x3 className="p-0 m-0" />
             </Button>
-            <Button className="m-0 p-2"
-              variant={viewMode === "row" ? "secondary" : "primary"}
+            <Button
+              className="m-0 p-2"
+              variant={viewMode === "row" ? "secondary" : "outline"}
               onClick={() => setViewMode("row")}
             >
               <Rows3 size={48} strokeWidth={2.5} />
@@ -68,11 +77,11 @@ const AllNeededPost = () => {
               : "grid-cols-1"
           }`}
         >
-          {filteredPosts.length > 0 ? (
-            filteredPosts.map((post) => <PostCard key={post._id} post={post} />)
-          ) : (
-            <p>No posts available.</p>
-          )}
+          {filteredPosts.length > 0
+            ? filteredPosts.map((post) => (
+                <PostCard post={post} key={post._id} />
+              ))
+            : loading && <Loader></Loader>}
         </div>
       ) : (
         <div className="mt-5">
@@ -87,7 +96,14 @@ const AllNeededPost = () => {
             </thead>
             <tbody>
               {filteredPosts.map((post) => (
-                <tr key={post._id} className="border-b">
+                <tr
+                  data-aos="zoom-in-out"
+                  data-aos-easing="ease-in-back"
+                  data-aos-delay="200"
+                  data-aos-offset="0"
+                  key={post._id}
+                  className="border-b"
+                >
                   <td className="px-2 py-2">
                     <img
                       src={post.thumbnail}
@@ -95,8 +111,12 @@ const AllNeededPost = () => {
                       className="w-16 h-16 object-cover"
                     />
                   </td>
-                  <td className="px-2 py-2 text-sm font-semibold sm:text-base md:text-lg">{post.postTitle}</td>
-                  <td className="px-2 py-2 text-sm font-semibold sm:text-base md:text-lg">{post.location}</td>
+                  <td className="px-2 py-2 text-sm font-semibold sm:text-base md:text-lg">
+                    {post.postTitle}
+                  </td>
+                  <td className="px-2 py-2 text-sm font-semibold sm:text-base md:text-lg">
+                    {post.location}
+                  </td>
                   <td className="px-2 py-2 text-sm font-semibold sm:text-base md:text-lg">
                     <Link
                       to={`/posts/${post._id}`}

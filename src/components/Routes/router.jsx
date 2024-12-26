@@ -30,7 +30,7 @@ import {
         },
         {
           path:"posts/:id",
-          element:<PostDetails></PostDetails>,
+          element:<PrivateRoutes><PostDetails></PostDetails></PrivateRoutes>,
           loader:(({params})=>fetch(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${params.id}`))
         }
       ]
@@ -57,15 +57,15 @@ import {
         },
         {
           path:"myposts",
-          element:<MyVolunteerPost></MyVolunteerPost>
+          element:<PrivateRoutes><MyVolunteerPost></MyVolunteerPost></PrivateRoutes>
         },
         {
           path:"updatepost/:id",
-          element:<MyVolunteerPostUpdate/>
+          element:<PrivateRoutes><MyVolunteerPostUpdate/></PrivateRoutes>
         },
         {
           path:"posts/:id",
-          element:<PostDetails></PostDetails>,
+          element:<PrivateRoutes><PostDetails></PostDetails></PrivateRoutes>,
           loader:(({param})=>fetch(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${param.id}`))
         }
       ]

@@ -11,7 +11,7 @@ import img2 from "../../assets/img2.jpeg"
 
 const Hero = () => {
   return (
-    <div>
+    <div className="my-auto">
       <Swiper
         slidesPerView={1}
         spaceBetween={10}

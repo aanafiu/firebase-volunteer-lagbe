@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { Eye, EyeClosed } from "lucide-react";
+import { CircleArrowRight, Eye, EyeClosed } from "lucide-react";
 import { UserContext } from "@/components/Provider/AuthProvider";
 import Loader from "@/components/Common/Loader";
 import axios from "axios";
@@ -72,8 +72,12 @@ export function RegistrationForm({ className, ...props }) {
     setLoading,
     loginGoogle,
     loading,
+    user
   } = useContext(UserContext);
-
+  if(user || user?.email)
+  {
+    navigate("/")
+  }
   const location = useLocation();
   // console.log(location);
 
@@ -212,7 +216,7 @@ export function RegistrationForm({ className, ...props }) {
             Register Now!
           </CardTitle>
           <CardDescription className="text-sm md:text-base mx-auto w-fit">
-            Enter your email below to login to your account
+            Enter your email below to create new account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -285,15 +289,16 @@ export function RegistrationForm({ className, ...props }) {
                   {passwordMessage}
                 </p>
               </div>
-              <Button type="submit" className="w-full">
-                Register Now!
+              <Button type="submit" variant="destructive" className="w-full">
+                Register Now! <CircleArrowRight color="#ffffff" strokeWidth={1.75} />
               </Button>
               <Button
                 onClick={handleGoogle}
-                variant="outline"
+                variant="destructive"
                 className="w-full"
               >
-                Register Now! with Google
+                Register Now! with Google <CircleArrowRight color="#ffffff" strokeWidth={1.75} />
+
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
@@ -301,7 +306,7 @@ export function RegistrationForm({ className, ...props }) {
               <Link
                 state={location.state}
                 to="/user/login"
-                className="underline underline-offset-4"
+                className="underline underline-offset-4 hover:text-green-500"
               >
                 Sign in
               </Link>

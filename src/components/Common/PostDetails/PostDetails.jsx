@@ -1,3 +1,4 @@
+import Loader from "@/components/Common/Loader";
 import { UserContext } from "@/components/Provider/AuthProvider";
 import { useTheme } from "@/components/Provider/theme-provider";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import Swal from "sweetalert2";
 
 
 const PostDetails = () => {
-    const {user} = useContext(UserContext);
+    const {user, loading,setLoading} = useContext(UserContext);
   const post = useLoaderData();
   console.log(post);
   const { theme } = useTheme();
@@ -34,7 +35,7 @@ useEffect(()=>{
 
 const navigate = useNavigate();
 //   Be A Volunteer Modal
-const handleBeVolunteer = (e)=>{
+const handleBeVolunteer = ()=>{
     Swal.fire({
         html: `
           <div class="w-full flex justify-center items-center mx-auto flex-col text-black">
@@ -100,11 +101,12 @@ const handleBeVolunteer = (e)=>{
 
             //   Now Descrese the total vlunteer number
             const data =  post.volunteersNeeded;
-            console.log(parseInt(data)); 
+            // console.log(parseInt(data)); 
             axios.patch(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${post._id}`,data)
             .then(response =>{
                 if(response.status === 200)
                 {
+                    navigate("/user/myprofile") 
                     const Toast = Swal.mixin({
                         toast: true,
                         position: "right-bottom",
@@ -121,14 +123,22 @@ const handleBeVolunteer = (e)=>{
                         title: "Requested As A Volunteer"
                       });
                 }
+                
             })
-            navigate("/user/myprofile")  
+            
         }
+
       })
 }
 
+if(loading)
+{
+    return<Loader></Loader>
+}
+
+
   return (
-    <Card className="bg-gradient-to-r dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-16">
+    <Card className="my-10 p-10 bg-blue-900 dark:bg-green-500">
       <div className="container mx-auto px-6 lg:px-16 gap-5 flex flex-col md:flex-row items-center">
         {/* Left Side: Image */}
         <div className="w-full">
@@ -142,14 +152,14 @@ const handleBeVolunteer = (e)=>{
         </div>
 
         {/* Right Side: Details */}
-        <div className="w-full lg:w-1/2 mt-8 lg:mt-0 lg:pl-12">
-          <h1 className="text-4xl lg:text-5xl font-bold text-black dark:text-gray-100 mb-4">
+        <div className="w-full mt-8 lg:mt-0 lg:pl-12">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white dark:text-white mb-4">
             {post.postTitle}
           </h1>
-          <p className="text-lg text-black dark:text-gray-300 mb-6">
+          <p className="text-lg text-white mb-6">
             {post.description}
           </p>
-          <div className="space-y-4 text-black dark:text-gray-400">
+          <div className="space-y-4 text-white">
             <p>
               <span className="font-semibold">Organizer:</span>{" "}
               {post.organizerName}
@@ -158,7 +168,7 @@ const handleBeVolunteer = (e)=>{
               <span className="font-semibold">Email:</span>{" "}
               <a
                 href={`mailto:${post.organizerEmail}`}
-                className="underline hover:text-indigo-300"
+                className="underline hover:text-gray-700 "
               >
                 {post.organizerEmail}
               </a>
@@ -176,16 +186,17 @@ const handleBeVolunteer = (e)=>{
             <p>
               <span className="font-semibold">Deadline:</span> {post.deadline}
             </p>
-            <h1 className={`${userStatus ==="requested" ? "text-green-500" : "text-red-500"}`}>Status: {userStatus.toUpperCase()}</h1>
+            <h1 className={`${userStatus ==="requested" ? "text-green-500 dark:text-blue-800" : "text-red-600 font-bold"}`}>Status: {userStatus.toUpperCase()}</h1>
           </div>
         </div>
       </div>
 
       {/* Center Button */}
-      <div className="mt-12 text-center">
-        <Button onClick={handleBeVolunteer} className="bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg">
+      <div className="mt-12 text-center" >
+        <Button variant="destructive" disabled={post?.volunteersNeeded === 0} onClick={handleBeVolunteer} className="hover:border-2 hover:border-white px-6 py-4 text-lg" >
           {userStatus === "requested" ? "Check Request" : "Be A Volunteer" }
         </Button>
+        <p>{post.volunteersNeeded === 0 && <small className="font-bold text-red-500">No Volunteer Need</small>}</p>
       </div>
     </Card>
   );
