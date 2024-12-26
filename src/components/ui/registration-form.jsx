@@ -74,10 +74,10 @@ export function RegistrationForm({ className, ...props }) {
     loading,
     user
   } = useContext(UserContext);
-  if(user || user?.email)
-  {
-    navigate("/")
-  }
+  // if(user || user?.email)
+  // {
+  //   navigate("/")
+  // }
   const location = useLocation();
   // console.log(location);
 
@@ -90,7 +90,7 @@ export function RegistrationForm({ className, ...props }) {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log(name, photo, email, password);
+    // console.log(name, photo, email, password);
 
     if (passwordValid || validatePassword(password)) {
       registerNewAccount(email, password)
@@ -155,7 +155,7 @@ export function RegistrationForm({ className, ...props }) {
     loginGoogle()
       .then((info) => {
         // Save Data To MongoDB
-        console.log(info.user.email);
+        // console.log(info.user.email);
         const userFull = info.user;
         axios
           .post("https://backend-volunteer-lagbe.vercel.app/userinformation", {

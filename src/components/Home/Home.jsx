@@ -1,3 +1,4 @@
+import ContactUS from "@/components/Home/ContactUS";
 import Hero from "@/components/Home/Hero";
 import Marqueer from "@/components/Home/Marqueer";
 import RecentPosts from "@/components/Home/RecentPosts";
@@ -8,6 +9,7 @@ const Home = () => {
             <Hero></Hero>
             <RecentPosts></RecentPosts>
             <Marqueer></Marqueer>
+            <ContactUS></ContactUS>
         </div>
     );
 };

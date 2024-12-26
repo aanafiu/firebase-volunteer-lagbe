@@ -13,16 +13,17 @@ import Swal from "sweetalert2";
 const PostDetails = () => {
     const {user, loading,setLoading} = useContext(UserContext);
   const post = useLoaderData();
-  console.log(post);
+  // console.log(post);
   const { theme } = useTheme();
 
 
 //   Status Check
 const [userStatus, setUserStatus] = useState("")
 useEffect(()=>{
-    axios.get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
+    axios.get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`,{withCredentials:true})
       .then((res)=>{
-        console.log(res.data.requestedVolunteer)
+        
+        // console.log(res.data.requestedVolunteer)
         const requestedData = res.data.requestedVolunteer;
         const status = requestedData?.find((r) => r.id === post._id)?.status;
         if (status === "requested") {
@@ -88,7 +89,7 @@ const handleBeVolunteer = ()=>{
                 status:"requested"
 
             };
-            console.log(updatedData)
+            // console.log(updatedData)
 
             fetch(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`, {
                 method: 'PATCH',
@@ -96,6 +97,7 @@ const handleBeVolunteer = ()=>{
                   "content-type": "application/json",
                 },
                 body: JSON.stringify(updatedData),
+                credentials:"include"
               })
               
 

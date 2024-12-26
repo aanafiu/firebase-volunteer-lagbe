@@ -106,7 +106,7 @@ const MyVolunteerPostUpdate = () => {
 
     axios.put(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${postID.id}`,data)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         if(res.status === 200)
         {
             Swal.fire({

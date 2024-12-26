@@ -1,6 +1,7 @@
 import Login from "@/components/Authentication/Login";
 import Register from "@/components/Authentication/Register";
 import AllNeededPost from "@/components/Common/AllNeededPost";
+import Error from "@/components/Common/Error";
 import PostDetails from "@/components/Common/PostDetails/PostDetails";
 import Home from "@/components/Home/Home";
 import MainLayout from "@/components/Layouts/MainLayout";
@@ -18,6 +19,7 @@ import {
     {
       path: "/",
       element: <MainLayout></MainLayout>,
+      errorElement:<Error></Error>,
       children: [
         {
           path:"",
@@ -38,11 +40,8 @@ import {
     {
       path: "/user",
       element: <UserLayout></UserLayout>,
+      errorElement:<Error></Error>,
       children: [
-        {
-          path:"",
-          element:<Login/>
-        },
         {
           path:"login",
           element:<Login/>

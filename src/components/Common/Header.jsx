@@ -7,7 +7,7 @@ import {
 import { useTheme } from "@/components/Provider/theme-provider";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, Moon, Sun } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { useContext } from "react";
@@ -16,13 +16,14 @@ import { UserContext } from "@/components/Provider/AuthProvider";
 const Header = () => {
   const { theme, setTheme } = useTheme();
   const { user, signOutUser } = useContext(UserContext);
-  console.log(user?.photoURL);
+  // console.log(user?.photoURL);
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
-
+const navigate = useNavigate();
   const handleLogout = () => {
     signOutUser();
+    navigate("/user/login")
   };
 
   return (

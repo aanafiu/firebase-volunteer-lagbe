@@ -24,7 +24,7 @@ const MyVolunteerPost = () => {
   const [userID, setUserID] = useState();
 
 
-  axios.get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
+  axios.get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`,{withCredentials:true})
     .then((res) => {
       setUserID(res.data._id);
       // console.log(res.data)
@@ -32,7 +32,7 @@ const MyVolunteerPost = () => {
     })
     .catch(error=>{
       // alert(error);
-      // navigate("/user/login")
+      navigate("/user/login")
     })
 
 

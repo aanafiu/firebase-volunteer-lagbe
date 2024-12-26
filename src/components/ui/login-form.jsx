@@ -25,12 +25,13 @@ export function LoginForm({ className, ...props }) {
   const handleEye = () => {
     setEyeBtn(!eyeBtn);
   };
-
-  useEffect(()=>{
-    if(user || user?.email)
-    {
-      navigate("/")
-    }},[user, navigate])
+const location = useLocation()
+const from = location.state?.from?.pathname || "/";
+useEffect(() => {
+  if (user || user?.email) {
+    navigate(from, { replace: true });
+  }
+}, [user, navigate, from]);
   
   // Notification Error
 
@@ -47,7 +48,6 @@ export function LoginForm({ className, ...props }) {
       }
     });
   };
-  const location = useLocation();
 
   // Login
   const handleLogin = (e) => {
@@ -58,10 +58,9 @@ export function LoginForm({ className, ...props }) {
     loginUser(email, password)
       .then(() => {
         const user = {email:email}
+
         axios.post("https://backend-volunteer-lagbe.vercel.app/jwt", user,{withCredentials:true})
-        .then(res=>{
-          // console.log(res.data);
-        })
+ 
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -95,12 +94,10 @@ export function LoginForm({ className, ...props }) {
     e.preventDefault();
     setLoading(true);
     loginGoogle()
-      .then(() => {
-        const user = {email:email}
+      .then((res) => {
+        const user = {email: res.user.email}
+        // console.log(res.user.email);
         axios.post("https://backend-volunteer-lagbe.vercel.app/jwt", user,{withCredentials:true})
-        .then(res=>{
-          // console.log(res.data);
-        })
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",

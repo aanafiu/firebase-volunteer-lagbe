@@ -1,54 +1,24 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "./AuthProvider";
 import { Navigate, useLocation } from "react-router-dom";
 import Loader from "@/components/Common/Loader";
-import axios from "axios";
 
-const PrivateRoutes = ({ children }) => {
-  const { user, loading, signOutUser } = useContext(UserContext);
-  const location = useLocation();
-  const [isVerified, setIsVerified] = useState(false);
-  const [verifying, setVerifying] = useState(true);
+const PrivateRoutes = ({children}) => {
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      if (user?.email) {
-        try {
-          const res = await axios.get(
-            `https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user.email}`
-          );
+const {user, loading} = useContext(UserContext);
+const location = useLocation();
+console.log(location);
+    if(loading)
+    {
+        return <Loader></Loader>
+    }
 
-          if (res.status === 200 && res.data.email === user.email) {
-            setIsVerified(true);
-          } else {
-            throw new Error("Verification failed");
-          }
-        } catch (error) {
-          axios.post("https://backend-volunteer-lagbe.vercel.app/logout",
-            {},
-            { withCredentials: true } 
-          );
-          signOutUser();
-        }
-      }
-      setVerifying(false);
-    };
+    if(user && user?.email )
+    {
+        return children;
+    }
 
-    verifyUser();
-  }, [user, signOutUser]);
-
-  // Show loader if still verifying or global loading state
-  if (loading || verifying) {
-    return <Loader />;
-  }
-
-  // Render children if user is verified
-  if (isVerified) {
-    return children;
-  }
-
-  // Redirect to login page if not verified
-  return <Navigate state={{ from: location }} to="/user/login" />;
+    return <Navigate state={location.pathname} to={"/user/login"}></Navigate>
 };
 
 export default PrivateRoutes;

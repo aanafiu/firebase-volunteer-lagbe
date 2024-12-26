@@ -22,8 +22,7 @@ const MyProfile = () => {
   useEffect(() => {
     if (user?.email) {
       setLoading(true); // Set loading to true when starting to fetch data
-      axios
-        .get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
+      axios.get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`,{withCredentials:true})
         .then((res) => {
         //   console.log(res.data);
           setData(res.data);
@@ -59,8 +58,9 @@ const MyProfile = () => {
       const myReq = allPost.filter(
         (post) => post.organizerEmail === user?.email
       );
-      console.log("Filtered Posts:", myReq); // Debug log
+      // console.log("Filtered Posts:", myReq); 
       setMyPostedPost(myReq);
+      setLoading(false)
     }
   }, [allPost, user?.email]);
 
@@ -78,7 +78,7 @@ const MyProfile = () => {
         axios
           .delete(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${id}`)
           .then((res) => {
-            console.log(`Deleted post with ID: ${id}`);
+            // console.log(`Deleted post with ID: ${id}`);
             if (type === "postedPost") {
               setMyPostedPost((prev) => prev.filter((post) => post._id !== id));
             }
