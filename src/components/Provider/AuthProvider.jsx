@@ -11,6 +11,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "@/components/Provider/firebase.config";
+import axios from "axios";
 
 export const UserContext = createContext();
 const auth = getAuth(app);
@@ -54,13 +55,17 @@ const AuthProvider = ({ children }) => {
   const signOutUser = () => {
     setLoading(true);
     setUser(null)
+    axios.post("https://backend-volunteer-lagbe.vercel.app/logout",
+      {}, // Pass an empty body or user data if required
+      { withCredentials: true } // Ensures cookies are included in the request
+    );
     return signOut(auth);
   };
 
   // Sign In Google
   const provider = new GoogleAuthProvider();
   const loginGoogle = () => {
-    console.log("i am here");
+    // console.log("i am here");
     return signInWithPopup(auth, provider);
   };
 

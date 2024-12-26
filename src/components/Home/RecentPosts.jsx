@@ -19,7 +19,7 @@ const RecentPosts = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching posts:", err);
+
         setLoading(false);
       });
   }, []);

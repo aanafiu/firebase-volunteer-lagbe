@@ -20,7 +20,7 @@ const AllNeededPost = () => {
         setPosts(response.data);
         setLoading(false);
       })
-      .catch((error) => console.error(error));
+
   }, []);
 
   const [searchQuery, setSearchQuery] = useState("");

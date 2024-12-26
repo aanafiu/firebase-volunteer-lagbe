@@ -17,19 +17,24 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
+// import { error } from "console";
 
 const MyVolunteerPost = () => {
   const { user } = useContext(UserContext);
   const [userID, setUserID] = useState();
 
-  axios
-    .get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
+
+  axios.get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
     .then((res) => {
       setUserID(res.data._id);
       // console.log(res.data)
       // console.log(res.data[0]._id)
-    });
-  console.log(userID);
+    })
+    .catch(error=>{
+      // alert(error);
+      // navigate("/user/login")
+    })
+
 
   const form = useForm({
     defaultValues: {
@@ -62,8 +67,7 @@ const MyVolunteerPost = () => {
     formData.append("image", file);
 
     try {
-      const response = await fetch(
-        "https://api.imgbb.com/1/upload?key=9a6f84f430229a50a927e5775a8d1091",
+      const response = await fetch("https://api.imgbb.com/1/upload?key=9a6f84f430229a50a927e5775a8d1091",
         {
           method: "POST",
           body: formData,
@@ -73,11 +77,9 @@ const MyVolunteerPost = () => {
       if (data.success) {
         setThumbnailUrl(data.data.url);
         form.setValue("thumbnail", data.data.url);
-      } else {
-        console.error("Image upload failed:", data.error);
-      }
+      } 
     } catch (error) {
-      console.error("Error uploading image:", error);
+      // console.error("Error uploading image:", error);
     }
   };
 

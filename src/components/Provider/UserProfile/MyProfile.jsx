@@ -25,11 +25,10 @@ const MyProfile = () => {
       axios
         .get(`https://backend-volunteer-lagbe.vercel.app/userinformation?email=${user?.email}`)
         .then((res) => {
-          console.log(res.data);
+        //   console.log(res.data);
           setData(res.data);
         })
         .catch((err) => {
-          console.error("Error fetching user data:", err);
         });
       axios
         .get("https://backend-volunteer-lagbe.vercel.app/volunteerneededpost")
@@ -65,10 +64,39 @@ const MyProfile = () => {
     }
   }, [allPost, user?.email]);
 
-  if(loading)
-  {
-    return <Loader></Loader>
-  }
+  const handleDelete = (id, type) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${id}`)
+          .then((res) => {
+            console.log(`Deleted post with ID: ${id}`);
+            if (type === "postedPost") {
+              setMyPostedPost((prev) => prev.filter((post) => post._id !== id));
+            }
+            if (res.status === 200) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success",
+                  });
+            }
+          })
+          .catch((err) => {
+
+          });
+        
+      }
+    });
+  };
 
   return (
     <div>

@@ -44,10 +44,7 @@ const MyVolunteerPostUpdate = () => {
   // Fetch post data and set as default values
   useEffect(() => {
     if (postID) {
-      axios
-        .get(
-          `https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${postID.id}`
-        )
+      axios.get(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${postID.id}`)
         .then((res) => {
           const postData = res.data;
 
@@ -71,7 +68,7 @@ const MyVolunteerPostUpdate = () => {
           );
         })
         .catch((error) => {
-          console.error("Error fetching post data:", error);
+          // console.error("Error fetching post data:", error);
         });
     }
   }, [postID, form]);
@@ -81,8 +78,7 @@ const MyVolunteerPostUpdate = () => {
     formData.append("image", file);
 
     try {
-      const response = await fetch(
-        "https://api.imgbb.com/1/upload?key=9a6f84f430229a50a927e5775a8d1091",
+      const response = await fetch("https://api.imgbb.com/1/upload?key=9a6f84f430229a50a927e5775a8d1091",
         {
           method: "POST",
           body: formData,
@@ -92,10 +88,10 @@ const MyVolunteerPostUpdate = () => {
       if (data.success) {
         form.setValue("thumbnail", data.data.url);
       } else {
-        console.error("Image upload failed:", data.error);
+        // console.error("Image upload failed:", data.error);
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      // console.error("Error uploading image:", error);
     }
   };
 
@@ -108,8 +104,7 @@ const MyVolunteerPostUpdate = () => {
     }
     data.volunteersNeeded = Number(data.volunteersNeeded);
 
-    axios
-      .put(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${postID.id}`,data)
+    axios.put(`https://backend-volunteer-lagbe.vercel.app/volunteerneededpost/${postID.id}`,data)
       .then((res) => {
         console.log(res)
         if(res.status === 200)

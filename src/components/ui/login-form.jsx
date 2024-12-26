@@ -16,6 +16,7 @@ import { CircleArrowRight, Eye, EyeClosed } from "lucide-react";
 import Swal from "sweetalert2";
 
 import Loader from "@/components/Common/Loader";
+import axios from "axios";
 
 export function LoginForm({ className, ...props }) {
   const navigate = useNavigate();
@@ -56,6 +57,11 @@ export function LoginForm({ className, ...props }) {
     const password = e.target.password.value;
     loginUser(email, password)
       .then(() => {
+        const user = {email:email}
+        axios.post("https://backend-volunteer-lagbe.vercel.app/jwt", user,{withCredentials:true})
+        .then(res=>{
+          // console.log(res.data);
+        })
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -90,6 +96,11 @@ export function LoginForm({ className, ...props }) {
     setLoading(true);
     loginGoogle()
       .then(() => {
+        const user = {email:email}
+        axios.post("https://backend-volunteer-lagbe.vercel.app/jwt", user,{withCredentials:true})
+        .then(res=>{
+          // console.log(res.data);
+        })
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
