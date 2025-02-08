@@ -98,10 +98,10 @@ npm install
 
 ### 3️⃣ Start the development server  
 ```sh
-npm start
+npm run dev
 ```
 
-> The app will be available at **http://localhost:3000/**  
+> The app will be available at **http://localhost:Port/**  
 
 ### 🔧 Backend Setup  
 ```sh
