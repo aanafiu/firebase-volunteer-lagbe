@@ -8,6 +8,9 @@ import "swiper/css/pagination";
 
 import img1 from "../../assets/img1.jpeg"
 import img2 from "../../assets/img2.jpeg"
+import i1 from "../../assets/i1.jpeg"
+import i2 from "../../assets/i2.jpeg"
+import i3 from "../../assets/i3.jpeg"
 
 const Hero = () => {
   return (
@@ -39,15 +42,15 @@ const Hero = () => {
         modules={[Pagination]}
         className="mySwiper"
       >
-        <SwiperSlide><img src={img1} alt="slider images"  /></SwiperSlide>
+        <SwiperSlide><img src={img2} alt="slider images"  /></SwiperSlide>
+        <SwiperSlide><img src={i1} alt="slider images"  /></SwiperSlide>
+        <SwiperSlide><img src={i2} alt="slider images"  /></SwiperSlide>
+        <SwiperSlide><img src={i3} alt="slider images"  /></SwiperSlide>
         <SwiperSlide><img src={img2} alt="slider images"  /></SwiperSlide>
         <SwiperSlide><img src={img1} alt="slider images"  /></SwiperSlide>
-        <SwiperSlide><img src={img2} alt="slider images"  /></SwiperSlide>
-        <SwiperSlide><img src={img1} alt="slider images"  /></SwiperSlide>
-        <SwiperSlide><img src={img2} alt="slider images"  /></SwiperSlide>
-        <SwiperSlide><img src={img1} alt="slider images"  /></SwiperSlide>
-        <SwiperSlide><img src={img2} alt="slider images"  /></SwiperSlide>
-        <SwiperSlide><img src={img1} alt="slider images"  /></SwiperSlide>
+        <SwiperSlide><img src={i1} alt="slider images"  /></SwiperSlide>
+        <SwiperSlide><img src={i2} alt="slider images"  /></SwiperSlide>
+        <SwiperSlide><img src={i3} alt="slider images"  /></SwiperSlide>
       </Swiper>
     </div>
   );
