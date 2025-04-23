@@ -5,7 +5,10 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
     return (
         <div>
+            <div className="sticky top-5 z-50">
+
             <Header></Header>
+            </div>
             <Outlet></Outlet>
             <Footer></Footer>
         </div>

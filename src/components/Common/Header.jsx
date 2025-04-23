@@ -27,7 +27,7 @@ const navigate = useNavigate();
   };
 
   return (
-    <Card className="container mx-auto bg-card py-3 px-4 border-0 flex items-center justify-between gap-6 rounded-2xl mt-5">
+    <Card className="container mx-auto py-1 px-4 border-0 flex items-center justify-between gap-6 rounded-2xl mt-5">
       <div>
         <Link to="/" className="text-xl whitespace-pre-wrap font-bold w-fit">
           <img src={logo} alt="" />

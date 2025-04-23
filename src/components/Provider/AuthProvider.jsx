@@ -66,6 +66,7 @@ const AuthProvider = ({ children }) => {
   const provider = new GoogleAuthProvider();
   const loginGoogle = () => {
     // console.log("i am here");
+    
     return signInWithPopup(auth, provider);
   };
 

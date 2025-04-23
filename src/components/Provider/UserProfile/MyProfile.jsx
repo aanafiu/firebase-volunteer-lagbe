@@ -38,7 +38,7 @@ const MyProfile = () => {
           setLoading(false); // Set loading to false after data has been fetched
         });
     }
-  }, [user?.email]);
+  }, [user?.email, data, allPost]);
 
   const [myReqPosts, setMyReqPosts] = useState([]);
 
